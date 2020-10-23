@@ -15,34 +15,12 @@ public class CoffeeControl {
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    @Path("/power_an")
+    @Path("/power")
     public String turnOnPower() {
         if (GPIOController.checkInitialization()) {
-            if (GPIOController.isTurnedOn()) {
-                return "Kaffeemaschine ist schon an!";
-            } else {
-                GPIOController.togglePower();
-                return "ok!";
-            }
-        } else {
-            return "Fehler bei der Initialisierung der Pins!";
+            return GPIOController.togglePower();
         }
-    }
-
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    @Path("/power_aus")
-    public String turnOffPower() {
-        if (GPIOController.checkInitialization()) {
-            if (!GPIOController.isTurnedOn()) {
-                return "Kaffeemaschine ist schon aus!";
-            } else {
-                GPIOController.togglePower();
-                return "ok!";
-            }
-        } else {
-            return "Fehler bei der Initialisierung der Pins!";
-        }
+        return "Fehler bei der Initialisierung der Pins!";
     }
 
     @GET
@@ -51,37 +29,27 @@ public class CoffeeControl {
     public String makeOneCup() {
         if (GPIOController.checkInitialization()) {
             if (GPIOController.isTurnedOn()) {
-                if (GPIOController.isBoiled()) {
-                    GPIOController.toggleOneCup();
-                    return "ok!";
-                } else {
-                    return "Kaffeemaschine heizt noch auf!";
-                }
+                GPIOController.toggleOneCup();
+                return "ok!";
             } else {
                 return "Kaffeemaschine ist aus!";
             }
-        } else {
-            return "Fehler bei der Initialisierung der Pins!";
         }
+        return "Fehler bei der Initialisierung der Pins!";
     }
-    
+
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/zwei_tassen")
     public String makeTwoCups() {
         if (GPIOController.checkInitialization()) {
             if (GPIOController.isTurnedOn()) {
-                if (GPIOController.isBoiled()) {
-                    GPIOController.toggleTwoCups();
-                    return "ok!";
-                } else {
-                    return "Kaffeemaschine heizt noch auf!";
-                }
+                GPIOController.toggleTwoCups();
+                return "ok!";
             } else {
                 return "Kaffeemaschine ist aus!";
             }
-        } else {
-            return "Fehler bei der Initialisierung der Pins!";
         }
+        return "Fehler bei der Initialisierung der Pins!";
     }
 }

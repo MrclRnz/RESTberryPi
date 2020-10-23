@@ -13,7 +13,7 @@ public class GPIOController {
 
     static {
         gpio = GpioFactory.getInstance();
-        initializeCofeePins();
+        initializeCoffeePins();
     }
 
     final static GpioController gpio;
@@ -21,9 +21,8 @@ public class GPIOController {
     static GpioPinDigitalOutput power;
     static GpioPinDigitalOutput two_cup;
     static boolean powerTurnedOn = false;
-    static Calendar turnedOnDate = null;
 
-    public static void initializeCofeePins() {
+    public static void initializeCoffeePins() {
         one_cup = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_01, "one_cup", PinState.HIGH);
         power = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02, "power", PinState.HIGH);
         two_cup = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_03, "two_cup", PinState.HIGH);
@@ -47,38 +46,26 @@ public class GPIOController {
         return powerTurnedOn;
     }
 
-    public static boolean isBoiled() {
-        boolean boiled = false;
-        if (turnedOnDate != null) {
-            turnedOnDate.add(Calendar.SECOND, 30);
-            if (turnedOnDate.getTimeInMillis() - (Calendar.getInstance().getTimeInMillis()) < 0) {
-                boiled = true;
-            }
-        }
-
-        return boiled;
-    }
-
-    public static void togglePower() {
+    public static String togglePower() {
         power.toggle();
         try {
-            Thread.sleep(2000);
+            Thread.sleep(500);
         } catch (InterruptedException ex) {
             Logger.getLogger(GPIOController.class.getName()).log(Level.SEVERE, null, ex);
         }
         powerTurnedOn = !powerTurnedOn;
-        if (powerTurnedOn) {
-            turnedOnDate = Calendar.getInstance();
-        } else {
-            turnedOnDate = null;
-        }
         power.toggle();
+        if (powerTurnedOn) {
+            return "Power: ON!";
+        } else {
+            return "Power: OFF!";
+        }
     }
 
     public static void toggleOneCup() {
         one_cup.toggle();
         try {
-            Thread.sleep(2000);
+            Thread.sleep(500);
         } catch (InterruptedException ex) {
             Logger.getLogger(GPIOController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -88,11 +75,11 @@ public class GPIOController {
     public static void toggleTwoCups() {
         two_cup.toggle();
         try {
-            Thread.sleep(2000);
+            Thread.sleep(500);
         } catch (InterruptedException ex) {
             Logger.getLogger(GPIOController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        one_cup.toggle();
+        two_cup.toggle();
     }
 
     public static void shutdownGPIO() {
