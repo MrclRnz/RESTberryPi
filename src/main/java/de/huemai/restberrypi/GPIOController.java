@@ -20,7 +20,6 @@ public class GPIOController {
     static GpioPinDigitalOutput one_cup;
     static GpioPinDigitalOutput power;
     static GpioPinDigitalOutput two_cup;
-    static boolean powerTurnedOn = false;
 
     public static void initializeCoffeePins() {
         one_cup = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_01, "one_cup", PinState.HIGH);
@@ -42,10 +41,6 @@ public class GPIOController {
         return successful;
     }
 
-    public static boolean isTurnedOn() {
-        return powerTurnedOn;
-    }
-
     public static String togglePower() {
         power.toggle();
         try {
@@ -53,13 +48,8 @@ public class GPIOController {
         } catch (InterruptedException ex) {
             Logger.getLogger(GPIOController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        powerTurnedOn = !powerTurnedOn;
         power.toggle();
-        if (powerTurnedOn) {
-            return "Power: ON!";
-        } else {
-            return "Power: OFF!";
-        }
+        return "ok!";
     }
 
     public static void toggleOneCup() {

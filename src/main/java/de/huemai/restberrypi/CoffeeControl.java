@@ -28,12 +28,8 @@ public class CoffeeControl {
     @Path("/eine_tasse")
     public String makeOneCup() {
         if (GPIOController.checkInitialization()) {
-            if (GPIOController.isTurnedOn()) {
-                GPIOController.toggleOneCup();
-                return "ok!";
-            } else {
-                return "Kaffeemaschine ist aus!";
-            }
+            GPIOController.toggleOneCup();
+            return "ok!";
         }
         return "Fehler bei der Initialisierung der Pins!";
     }
@@ -43,12 +39,8 @@ public class CoffeeControl {
     @Path("/zwei_tassen")
     public String makeTwoCups() {
         if (GPIOController.checkInitialization()) {
-            if (GPIOController.isTurnedOn()) {
-                GPIOController.toggleTwoCups();
-                return "ok!";
-            } else {
-                return "Kaffeemaschine ist aus!";
-            }
+            GPIOController.toggleTwoCups();
+            return "ok!";
         }
         return "Fehler bei der Initialisierung der Pins!";
     }
